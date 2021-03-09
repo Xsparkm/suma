@@ -9,8 +9,8 @@ import pyfiglet
 import aiohttp
 import requests
 import akinator as ak
+import os
 
-token="ODAxMjYyODM3MjU4NTE4NTI4.YAeIKw.yThHZqZ4XoeeycI5XUPBz3OxvLc"
 warn_channel = 814179067934408766
 client.remove_command("help")
 
@@ -579,4 +579,4 @@ async def help(ctx):
 
 #run#####################################################################
 
-client.run(token)
+client.run(os.environ['token'])
