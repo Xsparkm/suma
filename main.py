@@ -546,9 +546,13 @@ async def akinator(ctx):
 					await ctx.send(e)
 					continue
 		aki.win()
-		await ctx.send(
-		    f"It's {aki.first_guess['name']} ({aki.first_guess['description']})! Is it correct?(y/n)\n{aki.first_guess['absolute_picture_path']}\n\t"
-		)
+		embed = discord.Embed(color=ctx.author.top_role.colour)
+		embed.add_field(title=f"It's {aki.first_guess['name']}", description = ({aki.first_guess['description']}))
+		embed.set_image(url=aki.first_guess['absolute_picture_path'])
+		embed.set_footer(text="Is it correct?(y/n)")
+
+		await ctx.send(embed=embed)
+
 		correct = await client.wait_for("message", check=check)
 		if correct.content.lower() == "y":
 			await ctx.send("Yay\n")
