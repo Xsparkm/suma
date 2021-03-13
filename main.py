@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-client = commands.Bot(command_prefix=">")
+client = commands.Bot(command_prefix="/")
 
 import random
 import asyncio
@@ -9,9 +9,8 @@ import pyfiglet
 import aiohttp
 import requests
 import akinator as ak
-import os
 
-warn_channel = 814179067934408766
+
 client.remove_command("help")
 
 f = open("topic.txt", "r")
@@ -33,7 +32,7 @@ async def on_ready():
 async def ch_pr():
 	await client.wait_until_ready()
 
-	statuses = ["with you", ">help", "in Isle", "V 1.0"]
+	statuses = ["with you", ">help", "in Isle", "v 1.0", "with Giyuu", "demon slayer rpg"]
 
 	while not client.is_closed():
 
@@ -47,8 +46,6 @@ client.loop.create_task(ch_pr())
 
 #events==========
 
-
-filtered_words = ["<@636055755413389322>","<@758922777176178718>"]
 
 @client.event
 async def on_message(msg):
@@ -111,7 +108,9 @@ async def wave(ctx):
 
 #hug
 
-huggifs = []
+huggifs = [
+#i have not added yet :)
+]
 
 
 @client.command()
@@ -207,7 +206,7 @@ async def space(ctx, *, msg):
 	await ctx.send(spaced_message)
 
 
-#whois=====================================================================
+#userinfo=====================================================================
 
 
 @client.command(aliases=["userinfo", "aboutuser"])
@@ -279,21 +278,6 @@ async def treat(ctx, member: discord.Member):
 		await ctx.channel.send(
 		    f"{member.mention} You have accepted {ctx.author.name} is offer!")
 
-
-#ascii
-
-
-@client.command()
-async def ascii(ctx, *, text=None):
-	if text is None:
-		await ctx.send("You must input some text to make into Ascii!")
-		return
-	result = pyfiglet.figlet_format(text)
-
-	embed = discord.Embed(description=f"{result}")
-	await ctx.send(embed=embed)
-
-
 #howgay
 @client.command(aliases=['HOWGAY', 'Howgay'])
 async def howgay(ctx, member: discord.Member = None):
@@ -329,6 +313,7 @@ async def rickroll(ctx, time: int):
 
 #anime==================================================
 
+#credit https://github.com/Der-Eddy/discord_bot
 
 @client.command()
 async def anime(ctx, *, animeName: str):
@@ -410,7 +395,6 @@ async def anime(ctx, *, animeName: str):
 					                    data['title']['romaji']),
 					                inline=False)
 
-				#embed.add_field(name='Beschreibung', value=data['description'], inline=False)
 				if data['synonyms'] != []:
 					embed.add_field(name='Synonyme',
 					                value=', '.join(data['synonyms']),
@@ -489,34 +473,7 @@ async def anime(ctx, *, animeName: str):
 			else:
 				await ctx.send(':x: Unable find a suitable anime!')
 
-
-#text-covert=========================================================
-
-
-@client.command()
-async def convert(ctx, *, msg):
-
-	url = "https://ajith-fancy-text-v1.p.rapidapi.com/text"
-
-	querystring = {"text": {msg}}
-
-	headers = {
-	    'x-rapidapi-key': "6f4a1d9629msh23ff15a3e3354d7p112b30jsn67c80acd40d2",
-	    'x-rapidapi-host': "ajith-Fancy-text-v1.p.rapidapi.com"
-	}
-
-	response = requests.request("GET",
-	                            url,
-	                            headers=headers,
-	                            params=querystring)
-
-	await ctx.send(message)
-
-
-
-
 #aki#######################
-
 
 @client.command(aliases=["aki"])
 async def akinator(ctx):
@@ -547,7 +504,7 @@ async def akinator(ctx):
 					continue
 		aki.win()
 		embed = discord.Embed(color=ctx.author.top_role.colour)
-		embed.add_field(title=f"It's {aki.first_guess['name']}", description = ({aki.first_guess['description']}))
+		embed.add_field(name=f"It's {aki.first_guess['name']}", value = aki.first_guess['description'])
 		embed.set_image(url=aki.first_guess['absolute_picture_path'])
 		embed.set_footer(text="Is it correct?(y/n)")
 
@@ -561,12 +518,33 @@ async def akinator(ctx):
 	except Exception as e:
 		await ctx.send(e)
 
-#################################################
-#ping############################################
-#################################################
+#################################
+#game######
+#######################################
+@client.command()
+async def guess(ctx):
 
+    await ctx.send(f"Hello {ctx.author.name}! I'm thinking of a number between 1 and 50. You are given 15 tries to find the number. Good luck!")
+    secretNumber = random.randint(1,50)
 
-################################################
+    def check(message):
+        return message.author == ctx.author and message.channel == ctx.channel  and message.content.isdigit()
+
+    for guessesTaken in range(15):
+
+        guess = int((await client.wait_for('message', check=check)).content)
+
+        if guess < secretNumber:
+            await ctx.send("Your guess is too low")
+        elif guess > secretNumber:
+            await ctx.send("Your guess is too high")
+        else:
+            await ctx.send(f"GG! You correctly guessed the number in {guessesTaken + 1} guesses!")
+
+    else:
+        await ctx.send(f"Nope, sorry, you took too many guesses. The number I was thinking of was **{secretNumber}**")
+
+#################################################
 #help############################################
 #################################################
 
@@ -576,11 +554,123 @@ async def help(ctx):
 
     em.add_field(name="Roleplay", value="kill, hi, hug")
     em.add_field(name="Utilities", value="avatar, anime, userinfo")
-    em.add_field(name="Fun" ,value="rickroll, space, howgay, treat, choose, fortune, topic")
-    em.add_field(name="Games", value="slot, coinflip, akinator")
+    em.add_field(name="Fun" ,value="rickroll, space, howgay, treat, choose, fortune, topic, pokemon")
+    em.add_field(name="Games", value="slot, coinflip, akinator, guess")
 
     await ctx.send(embed=em)
 
+
+##pokemon####################################3
+
+@client.command(aliases=['dex'])
+async def pokedex(ctx, args):
+
+    pokemon = args
+    api = 'https://some-random-api.ml/pokedex?pokemon='+pokemon
+    json_data = requests.get(api).json()
+    name = json_data["name"]
+    ids = json_data["id"]
+    types = json_data["type"]
+    spe = json_data["species"]
+    image = json_data["sprites"]
+    desc = json_data["description"]
+    evolu = json_data['family']
+    abily = json_data['abilities']
+    H = json_data['height']
+    W = json_data['weight']
+    G = json_data['generation']
+    gender = json_data['gender']
+    stat = json_data['stats']
+
+
+
+    s = ", "
+
+    com = s.join(types)
+    spes = s.join(spe)
+    abi = s.join(abily)
+    evo = s.join(evolu['evolutionLine'])
+    gen = s.join(gender)
+
+    em = discord.Embed(
+      title =f"{name} #{ids}",
+      description=f":robot: : **{desc}**"
+    )
+
+    em.set_thumbnail(
+      url=image["animated"]
+    )
+
+    em.add_field(
+      name="Types",
+      value=f"{com}",
+      inline=True
+    )
+
+    em.add_field(
+      name="Species",
+      value=f"{spes}",
+      inline=True
+    )
+
+    em.add_field(
+      name="Ability",
+      value=f"{abi}",
+      inline=True
+    )
+
+    em.add_field(
+      name="Evolution Stage",
+      value=f"The {evolu['evolutionStage']} Evolution",
+      inline=True
+    )
+
+    em.add_field(
+      name="Evolution Line",
+      value=f"{evo}",
+      inline=False
+    )
+
+    em.add_field(
+      name="Height",
+      value=f"{H}",
+      inline=True
+    )
+
+    em.add_field(
+      name="Weight",
+      value=f"{W}",
+      inline=True
+    )
+
+    em.add_field(
+      name="Gender",
+      value=f"{gen}",
+      inline=True
+    )
+
+    em.add_field(
+      name="Stats :",
+      value=f":heart: : {stat['hp']}\n:crossed_swords: : {stat['attack']}\n:shield: : {stat['defense']}\n:dash: : {stat['speed']}",
+      inline = True
+    )
+
+    em.add_field(
+      name="Sp Stats :",
+      value=f"Sp :crossed_swords: : {stat['sp_atk']}\nSp️ ️:shield: : {stat['sp_def']}",
+      inline = True
+    )
+
+    em.set_footer(
+      text=f"This Pokemon Is From The {G} Generation\nTotal Stats : {stat['total']}"
+    )
+
+    await ctx.send(embed=em)
+
+
+
+
+
 #run#####################################################################
 
-client.run(os.environ['token'])
+client.run("token")
