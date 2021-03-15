@@ -622,7 +622,73 @@ async def pokedex(ctx, args):
     await ctx.send(embed=em)
 
 
+####################################################################
+####some-random-api-image#################
+####################################################################
 
+#animals
+
+@client.command(aliases=['CAT'])
+async def cat(ctx):
+
+
+	api = 'https://some-random-api.ml/img/cat'
+	json_data = requests.get(api).json()
+	image = json_data["link"]
+
+
+	em = discord.Embed(description=":cat2: cat")
+	em.set_image(url = image)
+
+	await ctx.send(embed=em)
+
+
+@client.command(aliases=['DOG'])
+async def dog(ctx):
+
+
+	api = 'https://some-random-api.ml/img/dog'
+	json_data = requests.get(api).json()
+	image = json_data["link"]
+
+
+	em = discord.Embed(description=":dog: dog")
+	em.set_image(url = image)
+
+	await ctx.send(embed=em)
+
+@client.command(aliases=['PANDA'])
+async def panda(ctx):
+
+
+	api = 'https://some-random-api.ml/img/panda'
+	json_data = requests.get(api).json()
+	image = json_data["link"]
+
+
+	em = discord.Embed(description=":panda_face: panda")
+	em.set_image(url = image)
+
+	await ctx.send(embed=em)
+
+#you can also add other animals by edited the api link and more
+
+#meme##
+
+@client.command(aliases=['memes'])
+async def meme(ctx):
+
+
+	api = 'https://some-random-api.ml/meme'
+	json_data = requests.get(api).json()
+	name = json_data["image"]
+	lol = json_data["caption"]
+
+
+	em = discord.Embed(description=lol)
+	em.set_image(url = name)
+
+	await ctx.send(embed=em)
 
 
 #run#####################################################################
