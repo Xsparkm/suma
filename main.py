@@ -554,9 +554,11 @@ async def help(ctx):
     em = discord.Embed(title='ℹ️ Help',description="Use r!help <command> for more details of a command.",color=ctx.author.color)
 
     em.add_field(name="Roleplay", value="kill, hi, hug")
-    em.add_field(name="Utilities", value="avatar, anime, userinfo")
-    em.add_field(name="Fun" ,value="rickroll, space, howgay, treat, choose, fortune, topic, pokemon")
+    em.add_field(name="Utilities", value="avatar, anime, userinfo, pokemon")
+    em.add_field(name="Fun" ,value="space, howgay, treat, choose, fortune, topic")
     em.add_field(name="Games", value="slot, coinflip, akinator, guess")
+	em.add_field(name="Image", value= "cat, dog, panda")
+	em.add_field(name="Others", value = "meme, rickroll")
 
     await ctx.send(embed=em)
 
