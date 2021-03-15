@@ -382,6 +382,7 @@ async def anime(ctx, *, animeName: str):
 				embed.set_footer(
 				    text='API provided by AniList.co | ID: {}'.format(
 				        str(data['id'])))
+
 				embed.set_thumbnail(url=data['coverImage']['large'])
 				if data['title']['english'] == None or data['title'][
 				    'english'] == data['title']['romaji']:
@@ -438,7 +439,7 @@ async def anime(ctx, *, animeName: str):
 				                inline=True)
 
 				try:
-					embed.add_field(name='Haupt-Studio',
+					embed.add_field(name='Studio',
 					                value=data['studios']['nodes'][0]['name'],
 					                inline=True)
 				except IndexError:
@@ -448,7 +449,7 @@ async def anime(ctx, *, animeName: str):
 				                inline=True)
 				embed.add_field(name='Genres',
 				                value=', '.join(data['genres']),
-				                inline=False)
+				                inline=True)
 				tags = ''
 				for tag in data['tags']:
 					tags += tag['name'] + ', '
@@ -471,7 +472,7 @@ async def anime(ctx, *, animeName: str):
 				await ctx.send(embed=embed)
 
 			else:
-				await ctx.send(':x: Unable find a suitable anime!')
+				await ctx.send('<:kannazoom:821017691015872574> Unable find a suitable anime!')
 
 #aki#######################
 
@@ -592,78 +593,31 @@ async def pokedex(ctx, args):
     evo = s.join(evolu['evolutionLine'])
     gen = s.join(gender)
 
-    em = discord.Embed(
-      title =f"{name} #{ids}",
-      description=f":robot: : **{desc}**"
-    )
+    em = discord.Embed(title =f"{name} #{ids}",description=f":robot: : **{desc}**")
 
-    em.set_thumbnail(
-      url=image["animated"]
-    )
+    em.set_thumbnail(url=image["animated"])
 
-    em.add_field(
-      name="Types",
-      value=f"{com}",
-      inline=True
-    )
+    em.add_field(name="Types",value=f"{com}",inline=True)
 
-    em.add_field(
-      name="Species",
-      value=f"{spes}",
-      inline=True
-    )
+    em.add_field(name="Species",value=f"{spes}",inline=True)
 
-    em.add_field(
-      name="Ability",
-      value=f"{abi}",
-      inline=True
-    )
+    em.add_field( name="Ability",value=f"{abi}",inline=True)
 
-    em.add_field(
-      name="Evolution Stage",
-      value=f"The {evolu['evolutionStage']} Evolution",
-      inline=True
-    )
+    em.add_field(name="Evolution Stage", value=f"The {evolu['evolutionStage']} Evolution", inline=True)
 
-    em.add_field(
-      name="Evolution Line",
-      value=f"{evo}",
-      inline=False
-    )
+    em.add_field(name="Evolution Line",value=f"{evo}",inline=False)
 
-    em.add_field(
-      name="Height",
-      value=f"{H}",
-      inline=True
-    )
+    em.add_field(name="Height",value=f"{H}",inline=True)
 
-    em.add_field(
-      name="Weight",
-      value=f"{W}",
-      inline=True
-    )
+    em.add_field(name="Weight",value=f"{W}",inline=True)
 
-    em.add_field(
-      name="Gender",
-      value=f"{gen}",
-      inline=True
-    )
+    em.add_field(name="Gender", value=f"{gen}",inline=True)
 
-    em.add_field(
-      name="Stats :",
-      value=f":heart: : {stat['hp']}\n:crossed_swords: : {stat['attack']}\n:shield: : {stat['defense']}\n:dash: : {stat['speed']}",
-      inline = True
-    )
+    em.add_field( name="Stats :",value=f":heart: : {stat['hp']}\n:crossed_swords: : {stat['attack']}\n:shield: : {stat['defense']}\n:dash: : {stat['speed']}",inline = True)
 
-    em.add_field(
-      name="Sp Stats :",
-      value=f"Sp :crossed_swords: : {stat['sp_atk']}\nSp️ ️:shield: : {stat['sp_def']}",
-      inline = True
-    )
+    em.add_field(name="Sp Stats :",value=f"Sp :crossed_swords: : {stat['sp_atk']}\nSp️ ️:shield: : {stat['sp_def']}",inline = True)
 
-    em.set_footer(
-      text=f"This Pokemon Is From The {G} Generation\nTotal Stats : {stat['total']}"
-    )
+    em.set_footer(text=f"This Pokemon Is From The {G} Generation\nTotal Stats : {stat['total']}")
 
     await ctx.send(embed=em)
 
