@@ -1,4 +1,4 @@
-### shinbot
+### suma
 This is a bot made by me for my discord server. This contains fun commands like slot, guessnumber, fortune.
 It also contain commands like animesearch, userinfo and more...
 
