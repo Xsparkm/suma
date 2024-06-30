@@ -48,7 +48,7 @@ async def on_message(message):
         return
 
     if message.channel.id == 1255593067436834817: 
-        knowledge_base = await loadFile("tsundere.json")
+        knowledge_base = await loadFile("depressed.json")
         if not knowledge_base:
             await message.channel.send("Error loading knowledge base.")
             return
